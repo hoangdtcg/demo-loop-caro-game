@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo Caro</title>
+</head>
+<style>
+    td{
+        width: 30px;
+        height: 30px;
+        text-align: center;
+    }
+</style>
+<body>
+<table id="board" border="1px" cellspacing="0"></table>
+
+<script>
+    //Vẽ bàn cờ
+    let row = 10;
+    let col = 10;
+    let turn = 1;
+    function createBoard() {
+        let str = '';
+        for (let i = 0; i < row; i++) {
+            str += "<tr>";
+            for (let j = 0; j < col; j++) {
+                str += `<td id="cell-${i}-${j}" onclick="clickCell(${i},${j})"></td>`;
+            }
+            str += "</tr>";
+        }
+        document.getElementById('board').innerHTML = str;
+    }
+    createBoard();
+    //Đánh X/O
+    function clickCell(x,y) {
+        let cell = document.getElementById(`cell-${x}-${y}`);
+        if(cell.innerHTML === ''){
+            if(turn === 1){
+                cell.innerHTML = "X";
+                console.log("Ở ô "+x +'-'+y+":"+getValueCell(x,y));
+                turn = 2;
+            }else {
+                cell.innerHTML = "O";
+                turn =1;
+            }
+            checkWin(x,y);
+        }
+    }
+
+    //lấy giá trị 1 cell thông qua tọa độ x, y
+    function getValueCell(x, y) {
+        if(x < 0 || x >= row || y < 0 || y >= col){
+            return '';
+        }
+        let cell = document.getElementById(`cell-${x}-${y}`);
+        return cell.innerHTML;
+    }
+
+    //Check win
+    function checkWin(x,y) {
+        checkNgang(x,y);
+        checkDoc(x,y);
+        checkCheo1(x,y);
+        checkCheo2(x,y);
+    }
+
+    function checkNgang(x,y) {
+        let count = 1;
+        let i = 1;
+        //Check bên phải
+        while (getValueCell(x,y) === getValueCell(x,y+i)){
+            count++;
+            i++;
+        }
+        //Check bên trái
+        let j = 1;
+        while (getValueCell(x,y) === getValueCell(x,y-j)){
+            count++;
+            j++;
+        }
+        //Báo win
+        if(count >= 5){
+            alert('You win');
+        }
+    }
+
+    function checkDoc(x,y) {
+        let count = 1;
+        let i = 1;
+        //Check bên trên
+        while (getValueCell(x,y) === getValueCell(x-i,y)){
+            count++;
+            i++;
+        }
+        //Check bên dưới
+        let j = 1;
+        while (getValueCell(x,y) === getValueCell(x+j,y)){
+            count++;
+            j++;
+        }
+        //Báo win
+        if(count >= 5){
+            alert('You win');
+        }
+    }
+
+    function checkCheo1(x,y) {
+        let count = 1;
+        let i = 1;
+        //Check chéo dưới bên phải
+        while (getValueCell(x,y) === getValueCell(x+i,y+i)){
+            count++;
+            i++;
+        }
+        //Check chéo trên bên trái
+        let j = 1;
+        while (getValueCell(x,y) === getValueCell(x-j,y-j)){
+            count++;
+            j++;
+        }
+        //Báo win
+        if(count >= 5){
+            alert('You win');
+        }
+    }
+
+    function checkCheo2(x,y) {
+        let count = 1;
+        let i = 1;
+        //Check bên trên
+        while (getValueCell(x,y) === getValueCell(x-i,y+i)){
+            count++;
+            i++;
+        }
+        //Check bên dưới
+        let j = 1;
+        while (getValueCell(x,y) === getValueCell(x+j,y-j)){
+            count++;
+            j++;
+        }
+        //Báo win
+        if(count >= 5){
+            alert('You win');
+        }
+    }
+
+
+
+
+</script>
+</body>
+</html>
